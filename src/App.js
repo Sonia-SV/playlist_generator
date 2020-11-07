@@ -1,55 +1,37 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import Login from './Login';
-import { getTokenFromUrl } from './spotify';
+import { getTokenFromUrl } from './services/spotify';
+import { getUser, getPlaylist } from './services/api';
 
 function App() {
-  useEffect(() => {
-    // Set token
-const hash = getTokenFromUrl();
-console.log(hash);
-
-const headers = new Headers({
-    'Content-Type': 'application/json',
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${hash.access_token}`
-});
-
-// user.id
-
-
-const user = new Request(`https://api.spotify.com/v1/me`, {
-    method: 'GET',
-    headers,
-});
-
-const getUser = async() => {
-  const getUserInfo = await fetch(user);
-  const userId = await getUserInfo.json();
-
-  return userId
-}
-
-const request = new Request(`https://api.spotify.com/v1/users/${userId.id}/playlists`, {
-    method: 'GET',
-    headers,
-});
+const [token, setToken] = useState('');
+const [user, setUser] = useState('');
+const [playlist, setPlaylist] = useState([]);
 
 
 
-const getPlaylist = async () => {
 
- const getUserPlaylist = await fetch(request);
-  const playlists = await getUserPlaylist.json();
-  
-    return console.log(playlists)
-}
-getUser();
-getPlaylist();
-    // window.location.hash = "";
+useEffect(() => {
+// setToken(getTokenFromUrl());
+//   if (token) {
+    getUser().then((user) => setUser(user));
+    if(user) {
+      console.log(user)
+      getPlaylist(user).then((playlist) => console.log(playlist));
+    } if (playlist) {
+      console.log(playlist)
+    // }
+    
+    
+  } else {
+    getUser().then((user) => setUser(user));
+    // setToken(getTokenFromUrl());
+    // getToken().then((data) => {
+    //   setToken(data.token)
+    // })
+  }
+}, [user]);
 
-
-
-  }, []);
 
   return (
     <div className="app">
