@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Login from './Login';
+import Playlist from './Playlist';
 import { getTokenFromUrl } from './services/spotify';
 import { getUser, getPlaylist } from './services/api';
 
@@ -12,30 +13,25 @@ const [playlist, setPlaylist] = useState([]);
 
 
 useEffect(() => {
+  window.location.hash = "";
 // setToken(getTokenFromUrl());
 //   if (token) {
     getUser().then((user) => setUser(user));
     if(user) {
       console.log(user)
-      getPlaylist(user).then((playlist) => console.log(playlist));
-    } if (playlist) {
+      getPlaylist(user).then((playlist) => setPlaylist(playlist.items));
       console.log(playlist)
-    // }
-    
-    
-  } else {
+    }  else {
     getUser().then((user) => setUser(user));
-    // setToken(getTokenFromUrl());
-    // getToken().then((data) => {
-    //   setToken(data.token)
-    // })
   }
 }, [user]);
 
+console.log(playlist);
 
   return (
     <div className="app">
-      <Login />
+      {playlist.length > 0 ? <Playlist/> : <Login />}
+      
     </div>
   );
 };

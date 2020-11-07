@@ -31,7 +31,10 @@ const getUser = async() => {
 
 const getPlaylist = async (user) => {
 
- const getUserPlaylist = await fetch(`https://api.spotify.com/v1/users/${user.id}/playlists`);
+ const getUserPlaylist = await fetch(`https://api.spotify.com/v1/users/${user}/playlists`, {
+   method: 'GET',
+    headers,
+ });
   const playlists = await getUserPlaylist.json();
   
     return playlists;
