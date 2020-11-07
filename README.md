@@ -1,1 +1,3 @@
-Client ID ca63b73f189140cd8772d476bab71bbd
+##Playlist generator
+
+Web app que genera playlist a un usuario de Spotify a partir de las ya existentes.
