@@ -39,5 +39,16 @@ const getPlaylist = async (user) => {
   
     return playlists;
 };
+const getSongs = async (url) => {
 
-export { getPlaylist, getUser };
+ const getUserSongs = await fetch(url, {
+   method: 'GET',
+    headers,
+ });
+  const songs = await getUserSongs.json();
+  
+    return songs;
+};
+
+export { getPlaylist, getUser, getSongs };
+
