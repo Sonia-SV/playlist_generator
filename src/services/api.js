@@ -7,7 +7,7 @@ const headers = new Headers({
     'Authorization': `Bearer ${hash.access_token}`
 });
 
-// user.id
+
 
 
 const user = new Request(`https://api.spotify.com/v1/me`, {
@@ -41,14 +41,33 @@ const getPlaylist = async (user) => {
 };
 const getSongs = async (url) => {
 
- const getUserSongs = await fetch(url, {
-   method: 'GET',
-    headers,
- });
+const getUserSongs = await fetch(url, {
+  method: 'GET',
+  headers,
+});
   const songs = await getUserSongs.json();
-  
     return songs;
 };
 
-export { getPlaylist, getUser, getSongs };
+const getAudioFeatures = async (songId, songName, artistName) => {
+  const getSongAudioFeatures = await fetch(`https://api.spotify.com/v1/audio-features/${songId}`, {
+   method: 'GET',
+    headers,
+ });
+  const audioFeatures = await getSongAudioFeatures.json();
+  console.log(artistName, songName, audioFeatures);
+  return audioFeatures
+}
+
+const getTopTracks = async (artistId, artistName) => {
+  const getArtistTopTracks = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=US`, {
+    method: 'GET',
+    headers,
+  });
+  const topTracks = await getArtistTopTracks.json();
+  topTracks.tracks.forEach((song) => getAudioFeatures(song.id, song.name, artistName))
+  return topTracks;
+}
+
+export { getPlaylist, getUser, getSongs, getTopTracks };
 

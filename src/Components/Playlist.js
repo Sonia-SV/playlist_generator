@@ -10,7 +10,7 @@ import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 import SkipNextIcon from '@material-ui/icons/SkipNext';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
-import { getSongs } from '../services/api';
+import { getSongs, getTopTracks } from '../services/api';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -45,17 +45,20 @@ function Playlist(props) {
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
 
 
+  const getTarget = () => {
+    getSongs(props.list.tracks.href).then((songs) => setSongs(songs));
+}
 
-  useEffect(() => {getSongs(props.list.tracks.href).then((songs) => setSongs(songs));}, []);
+  useEffect(() => {
   if (songs.items !== undefined) {
-    const songsList = songs.items.map((song) => song.track.name + ', by ' + song.track.artists[0].name)
-    console.log(songsList)
+    const songsList = songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
+    console.log(songsList, 'song list')
   }
-//
+});
 
 
   return (
-    <Grid item xs={12} sm={6} md={4}>
+    <Grid item xs={12} sm={6} md={4} onClick={getTarget} >
       <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
