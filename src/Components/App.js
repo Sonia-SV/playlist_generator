@@ -19,12 +19,13 @@ useEffect(() => {
     if(user) {
       getPlaylist(user).then((playlist) => setPlaylist(playlist.items));
       setIsLogged(true);
-    }  else {
-    getUser().then((user) => setUser(user));
-  }
+    }  
+  //   else {
+  //   getUser().then((user) => setUser(user));
+  // }
 }, [user]);
 
-
+console.log(window.location.href);
   return (
     <div className="app">
       {isLogged ? <UserSpace playlist={playlist}/> : <Login />}

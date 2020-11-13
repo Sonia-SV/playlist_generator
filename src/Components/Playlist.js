@@ -40,6 +40,7 @@ const useStyles = makeStyles((theme) => ({
 
 function Playlist(props) {
   const [songs, setSongs] = useState([]);
+  const [randomSongs, setRandomSongs] = useState([]);
   const classes = useStyles();
   const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
@@ -47,14 +48,52 @@ function Playlist(props) {
 
   const getTarget = () => {
     getSongs(props.list.tracks.href).then((songs) => setSongs(songs));
-}
-
-  useEffect(() => {
-  if (songs.items !== undefined) {
-    const songsList = songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
-    console.log(songsList, 'song list')
+    // songsList();
   }
-});
+
+  console.log(songs.items);
+
+
+// const songsList = () => {
+//   console.log(songs)
+
+//   if (songs.items.length > 20) {
+//     for (let i = 0; i < 20; i++) {
+//       console.log('Holi');
+//       console.log(songs.items[Math.floor(Math.random() * songs.items.length)]);
+//     }
+
+//   }
+// };
+  useEffect(() => {
+    console.log(songs)
+    const randomSongsIndex = [];
+  //   if (songs.limit > 20) {
+  //   for (let i = 0; i < 20; i++) {
+  //     let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
+  //     randomSongsIndex.push(randomIndex)
+  //     // console.log();
+  //   }
+  // }
+  setRandomSongs(randomSongsIndex)
+  });
+  
+  console.log(randomSongs);
+
+//   songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
+// console.log(songs);
+// }
+
+// songsList();
+
+  // useEffect(() => {
+//   if (songs.items !== undefined) {
+//     const songsList = songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
+//     console.log(songsList, 'song list')
+//   }
+//
+
+
 
 
   return (

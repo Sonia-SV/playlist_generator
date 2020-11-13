@@ -64,9 +64,14 @@ const getTopTracks = async (artistId, artistName) => {
     method: 'GET',
     headers,
   });
+
   const topTracks = await getArtistTopTracks.json();
-  topTracks.tracks.forEach((song) => getAudioFeatures(song.id, song.name, artistName))
-  return topTracks;
+  const tracks = [];
+  // topTracks.tracks.forEach((song) => getAudioFeatures(song.id, song.name, artistName));
+  for (let track of topTracks.tracks) {
+    tracks.push(track.id)
+  }
+  return tracks;
 }
 
 export { getPlaylist, getUser, getSongs, getTopTracks };
