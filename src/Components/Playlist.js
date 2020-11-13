@@ -65,18 +65,19 @@ function Playlist(props) {
 
 //   }
 // };
+
+//SI EXISTE RANDOMSONGS SE REALIZA LA PETICIÓN CON RANDOM SONGS, SI NO SE HACE LA PETICIÓN CON SONGS.
   useEffect(() => {
     console.log(songs)
     const randomSongsIndex = [];
-  //   if (songs.limit > 20) {
-  //   for (let i = 0; i < 20; i++) {
-  //     let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
-  //     randomSongsIndex.push(randomIndex)
-  //     // console.log();
-  //   }
-  // }
-  setRandomSongs(randomSongsIndex)
-  });
+    if (songs.items !== undefined && songs.limit > 20) {
+    for (let i = 0; i < 20; i++) {
+      let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
+      randomSongsIndex.push(randomIndex);
+    }
+    setRandomSongs(randomSongsIndex);
+  }
+  }, [songs]);
   
   console.log(randomSongs);
 
