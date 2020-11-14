@@ -59,7 +59,7 @@ const getAudioFeatures = async (songId, songName, artistName) => {
   return audioFeatures
 }
 
-const getTopTracks = async (artistId, artistName) => {
+const getTopTracks = async (artistId) => {
   const getArtistTopTracks = await fetch(`https://api.spotify.com/v1/artists/${artistId}/top-tracks?country=US`, {
     method: 'GET',
     headers,
@@ -73,6 +73,7 @@ const getTopTracks = async (artistId, artistName) => {
   }
   return tracks;
 }
+
 
 export { getPlaylist, getUser, getSongs, getTopTracks };
 

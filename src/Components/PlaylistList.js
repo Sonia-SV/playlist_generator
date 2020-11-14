@@ -1,5 +1,6 @@
 import React from 'react';
 import Playlist from './Playlist';
+import Moodlist from './MoodList';
 import Grid from '@material-ui/core/Grid';
 
 function PlaylistList(props) {
@@ -11,10 +12,12 @@ function PlaylistList(props) {
     );
   });
   return (
+    <>
     <Grid container direction="row" justify="center"
     alignItems="center"
     spacing={3}>
     {singlePlaylist}</Grid>
+    </>
   );
 }
 

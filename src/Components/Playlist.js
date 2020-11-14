@@ -10,8 +10,11 @@ import Typography from '@material-ui/core/Typography';
 // import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
 // import PlayArrowIcon from '@material-ui/icons/PlayArrow';
 // import SkipNextIcon from '@material-ui/icons/SkipNext';
-import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+// import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
+import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
+import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import { getSongs, getTopTracks } from '../services/api';
+import MoodList from './MoodList';
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -42,29 +45,34 @@ const useStyles = makeStyles((theme) => ({
 function Playlist(props) {
   const [songs, setSongs] = useState([]);
   const [randomSongs, setRandomSongs] = useState([]);
+  const [isHappy, setIsHappy] = useState('');
+  // const [topTracksList, setTopTracksList] = useState([]);
   const classes = useStyles();
   // const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
 
 
-  const getTarget = () => {
+  const getTarget = (ev) => {
     getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
-    // songsList();
+    getMood(ev);
   }
 
 
+  const setMood = (clickedId) => {
+    if(clickedId === 'happy') {
+      setIsHappy(true)
+      console.log(clickedId)
 
-// const songsList = () => {
-//   console.log(songs)
+    } else if (clickedId === 'sad') {
+      setIsHappy(false)
+      console.log(clickedId)
+    }
+  }
 
-//   if (songs.items.length > 20) {
-//     for (let i = 0; i < 20; i++) {
-//       console.log('Holi');
-//       console.log(songs.items[Math.floor(Math.random() * songs.items.length)]);
-//     }
-
-//   }
-// };
+  const getMood = (ev) => {
+    let clickedId = ev.currentTarget.id;
+    setMood(clickedId);
+  }
 
 //SI EXISTE RANDOMSONGS SE REALIZA LA PETICIÓN CON RANDOM SONGS, SI NO SE HACE LA PETICIÓN CON SONGS.
   useEffect(() => {
@@ -79,27 +87,32 @@ function Playlist(props) {
       }
     }
   }, [songs]);
-  console.log(songs)
-  console.log(randomSongs);
+
+//   const topTracks = () => {
+//     console.log('Top tracks');
+//     const songList = randomSongs !== [] ? randomSongs : songs;
+//     if(songList.length > 0) {
+//       console.log(songList);
+//       songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList(topTrackList)));
+//   }
+// }
+// topTracks();
+// console.log(topTracksList);
+
+
 
 //   songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
 // console.log(songs);
 // }
 
-// songsList();
 
-  // useEffect(() => {
-//   if (songs.items !== undefined) {
-//     const songsList = songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
-//     console.log(songsList, 'song list')
-//   }
-//
+
 
 
 
 
   return (
-    <Grid item xs={12} sm={6} md={4} onClick={getTarget} >
+    <Grid item xs={12} sm={6} md={4} >
       <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
@@ -119,8 +132,11 @@ function Playlist(props) {
             </IconButton>
           </div> */}
           <div>
-            <IconButton aria-label="more">
-              <MoreHorizIcon />
+            <IconButton aria-label="satisfied" onClick={getTarget} id="happy" >
+              <SentimentVerySatisfiedIcon />
+            </IconButton>
+            <IconButton aria-label="dissatisfied" onClick={getTarget} id="sad">
+              <SentimentVeryDissatisfiedIcon />
             </IconButton>
           </div>
         </div>
@@ -130,6 +146,7 @@ function Playlist(props) {
           title={props.list.name}
         />
       </Card>
+      {/* <MoodList songs={songs.length > 20 ? randomSongs : songs} /> */}
       </Grid>
   );
 }
