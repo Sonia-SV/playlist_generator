@@ -1,14 +1,15 @@
 import React, { useEffect, useState } from 'react';
-import { makeStyles, useTheme } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/core/styles';
+// import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-import SkipNextIcon from '@material-ui/icons/SkipNext';
+// import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
+// import PlayArrowIcon from '@material-ui/icons/PlayArrow';
+// import SkipNextIcon from '@material-ui/icons/SkipNext';
 import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import { getSongs, getTopTracks } from '../services/api';
 
@@ -42,16 +43,15 @@ function Playlist(props) {
   const [songs, setSongs] = useState([]);
   const [randomSongs, setRandomSongs] = useState([]);
   const classes = useStyles();
-  const theme = useTheme();
+  // const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
 
 
   const getTarget = () => {
-    getSongs(props.list.tracks.href).then((songs) => setSongs(songs));
+    getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
     // songsList();
   }
 
-  console.log(songs.items);
 
 
 // const songsList = () => {
@@ -68,17 +68,18 @@ function Playlist(props) {
 
 //SI EXISTE RANDOMSONGS SE REALIZA LA PETICIÓN CON RANDOM SONGS, SI NO SE HACE LA PETICIÓN CON SONGS.
   useEffect(() => {
-    console.log(songs)
-    const randomSongsIndex = [];
-    if (songs.items !== undefined && songs.limit > 20) {
-    for (let i = 0; i < 20; i++) {
-      let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
-      randomSongsIndex.push(randomIndex);
+    if(songs !== []) {
+      const randomSongsIndex = [];
+      if (songs.length > 20) {
+      for (let i = 0; i < 20; i++) {
+        let randomIndex = songs[Math.floor(Math.random() * songs.length)];
+        randomSongsIndex.push(randomIndex);
+        }
+      setRandomSongs(randomSongsIndex);
+      }
     }
-    setRandomSongs(randomSongsIndex);
-  }
   }, [songs]);
-  
+  console.log(songs)
   console.log(randomSongs);
 
 //   songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));

@@ -7,7 +7,7 @@ const NavBar = () => {
         <div>
         <AppBar position="static">
             <Toolbar>
-                <Typography variant="title" color="inherit">
+                <Typography variant="h6" color="inherit">
                 Spotify de Miriam y Sonia
                 </Typography>
             </Toolbar>

@@ -5,31 +5,29 @@ import { getTokenFromUrl } from '../services/spotify';
 import { getUser, getPlaylist } from '../services/api';
 
 function App() {
-const [token, setToken] = useState('');
+const [thereIsToken, setThereIsToken] = useState(false);
 const [user, setUser] = useState('');
 const [playlist, setPlaylist] = useState([]);
-const [isLogged, setIsLogged] = useState(false)
+// const [isLogged, setIsLogged] = useState(false)
 
-
+const hash = getTokenFromUrl();
 useEffect(() => {
-  window.location.hash = "";
-// setToken(getTokenFromUrl());
-//   if (token) {
+  if (hash.access_token !== undefined) {
+    setThereIsToken(true);
+  };
+
+  if(thereIsToken) {
     getUser().then((user) => setUser(user));
     if(user) {
       getPlaylist(user).then((playlist) => setPlaylist(playlist.items));
-      setIsLogged(true);
-    }  
-  //   else {
-  //   getUser().then((user) => setUser(user));
-  // }
-}, [user]);
+      window.location.hash = "";
+    }
+    }
+}, [hash.access_token, thereIsToken, user]);
 
-console.log(window.location.href);
   return (
     <div className="app">
-      {isLogged ? <UserSpace playlist={playlist}/> : <Login />}
-      
+      {thereIsToken ? <UserSpace playlist={playlist}/> : <Login />}
     </div>
   );
 };
