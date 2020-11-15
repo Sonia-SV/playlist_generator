@@ -11,7 +11,6 @@ import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissa
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import { getSongs, getTopTracks, getAudioFeatures } from '../services/api';
 import MoodList from './MoodList';
-import {arrayTemporal} from '../services/arrayTemporal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -67,46 +66,35 @@ function Playlist(props) {
 
   });
     getMood(ev);
-    saveTopTracks();
-    saveAudioFeatures();
+    await saveTopTracks();
+    await saveAudioFeatures();
+  };
 
-  }
+  const saveTopTracks = async () => {
+    const topTracks = [];
+    for (let song of songs) {
+      const tracks = await getTopTracks(song.track.artists[0].id);
+      topTracks.push(tracks);
+    };
 
-  const saveTopTracks = () => {
-
-    setTopTracksList(arrayTemporal);
-
-    // let prueba = [];
-
-    // if(songs.length > 0) {
-    //   // const cosas = songs.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => prueba.push(topTrackList)));
-    //   // console.table(cosas)
-
-    //   const tracks = [];
-    // for (let song of songs) {
-    //   getTopTracks(song.track.artists[0].id).then((topTrackList) => console.log(topTrackList));
-
-    // }
-    // }
-  }
+    setTopTracksList(topTracks);
+  };
 
 const saveAudioFeatures = async () => {
+  const songsToPlaylist = [];
   for (let artist of topTracksList) {
     const artistInfo = {};
     for (let song of artist) {
       const features = await getAudioFeatures(song);
+      console.log(features)
       const mood = isHappy ? features.danceability : features.valence;
       artistInfo[features.id] = mood;
     }
-    console.log(artistInfo);
-  }
-
-  // for (let artist of topTracksList) {
-  //   const artistSong = artist.map((song) => getAudioFeatures(song).then(features =>  features))
-  //   console.log(artistSong);
   
-  // };
-}
+    const keysSorted = Object.keys(artistInfo).sort(function(a,b){return artistInfo[isHappy ? b : a]-artistInfo[isHappy ? a : b]});
+    songsToPlaylist.push(keysSorted[0]);
+  }
+};
 
 
   const setMood = (clickedId) => {
@@ -118,37 +106,12 @@ const saveAudioFeatures = async () => {
       setIsHappy(false)
       console.log(clickedId)
     }
-  }
+  };
 
   const getMood = (ev) => {
     let clickedId = ev.currentTarget.id;
     setMood(clickedId);
-  }
-
-
-//   const topTracks = async  () => {
-//     console.log('Top tracks');
-//     const songList = randomSongs !== [] ? randomSongs : songs;
-//     // console.log(songList.length);
-//     if(songList.length > 0) {
-//       console.log(songList);
-//       await songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList(topTrackList)));
-//   }
-// }
-// topTracks();
-// console.log(topTracksList);
-
-
-
-//   songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
-// console.log(songs);
-// }
-
-
-
-
-
-
+  };
 
   return (
     <Grid item xs={12} sm={6} md={4} >
@@ -185,7 +148,6 @@ const saveAudioFeatures = async () => {
           title={props.list.name}
         />
       </Card>
-      {/* <MoodList songs={songs.length > 20 ? randomSongs : songs} /> */}
       </Grid>
   );
 }

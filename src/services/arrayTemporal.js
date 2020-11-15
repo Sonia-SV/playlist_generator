@@ -11,6 +11,6 @@ export const arrayTemporal =[
     ],
     ["7tFiyTwD0nx5a1eklYtX2J", "7hQJA50XrCWABAu5v6QZ4i", "57JVGBtBLCfHw2muk5416J", "11IzgLRXV7Cgek3tEgGgjw", "54flyrjcdnQdco7300avMJ", "7h2yhVxcZOGyQdOwD4Hu8J", "7ccI9cStQbQdystvc6TvxD", "1HmzAZUvhQLhLo2z3ocpZI", "6cFZ4PLC19taNlpl9pbGMf", "35ItUJlMtjOQW3SSiTCrrw"
     ],
-    ["6NvRxjfYkkT2SpirAlmsjH", "45DElIx0dXqUH4A88yQFdE", "7oXRMDUzBPekkLRTJhSGvC", "0Cgd3CK6D2hhbwmLRvtscH", "1wsnCfewxZlCs7cJxkaMZM", "0BqQWfhMrkpRAUCbdfdHUC", "63wsuMhok6GgcBRd2strGk", "0wmaGiDKtKaRf7G8nBfNsQ", "2JB7PvDV0R3Vwbq0iy1WPe", "1Pc3gTtQG4Cq1x81NcXtCN"
-    ]
+    // ["6NvRxjfYkkT2SpirAlmsjH", "45DElIx0dXqUH4A88yQFdE", "7oXRMDUzBPekkLRTJhSGvC", "0Cgd3CK6D2hhbwmLRvtscH", "1wsnCfewxZlCs7cJxkaMZM", "0BqQWfhMrkpRAUCbdfdHUC", "63wsuMhok6GgcBRd2strGk", "0wmaGiDKtKaRf7G8nBfNsQ", "2JB7PvDV0R3Vwbq0iy1WPe", "1Pc3gTtQG4Cq1x81NcXtCN"
+    // ]
 ]
