@@ -7,14 +7,11 @@ import CardMedia from '@material-ui/core/CardMedia';
 import IconButton from '@material-ui/core/IconButton';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
-// import SkipPreviousIcon from '@material-ui/icons/SkipPrevious';
-// import PlayArrowIcon from '@material-ui/icons/PlayArrow';
-// import SkipNextIcon from '@material-ui/icons/SkipNext';
-// import MoreHorizIcon from '@material-ui/icons/MoreHoriz';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { getSongs, getTopTracks } from '../services/api';
+import { getSongs, getTopTracks, getAudioFeatures } from '../services/api';
 import MoodList from './MoodList';
+import {arrayTemporal} from '../services/arrayTemporal'
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -71,27 +68,45 @@ function Playlist(props) {
   });
     getMood(ev);
     saveTopTracks();
+    saveAudioFeatures();
 
   }
 
   const saveTopTracks = () => {
 
-    const prueba = [];
+    setTopTracksList(arrayTemporal);
 
-    if(songs.length > 0) {
-      songs.forEach((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => prueba.push(topTrackList))
-      )
-      
-    }
-    console.log(prueba)
-    
+    // let prueba = [];
+
+    // if(songs.length > 0) {
+    //   // const cosas = songs.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => prueba.push(topTrackList)));
+    //   // console.table(cosas)
+
+    //   const tracks = [];
+    // for (let song of songs) {
+    //   getTopTracks(song.track.artists[0].id).then((topTrackList) => console.log(topTrackList));
+
+    // }
+    // }
   }
 
-  console.log(topTracksList);
+const saveAudioFeatures = async () => {
+  for (let artist of topTracksList) {
+    const artistInfo = {};
+    for (let song of artist) {
+      const features = await getAudioFeatures(song);
+      const mood = isHappy ? features.danceability : features.valence;
+      artistInfo[features.id] = mood;
+    }
+    console.log(artistInfo);
+  }
 
-
-
-
+  // for (let artist of topTracksList) {
+  //   const artistSong = artist.map((song) => getAudioFeatures(song).then(features =>  features))
+  //   console.log(artistSong);
+  
+  // };
+}
 
 
   const setMood = (clickedId) => {

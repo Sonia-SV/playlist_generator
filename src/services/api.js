@@ -49,13 +49,12 @@ const getUserSongs = await fetch(url, {
     return songs;
 };
 
-const getAudioFeatures = async (songId, songName, artistName) => {
+const getAudioFeatures = async (songId) => {
   const getSongAudioFeatures = await fetch(`https://api.spotify.com/v1/audio-features/${songId}`, {
    method: 'GET',
     headers,
  });
   const audioFeatures = await getSongAudioFeatures.json();
-  console.log(artistName, songName, audioFeatures);
   return audioFeatures
 }
 
@@ -67,7 +66,6 @@ const getTopTracks = async (artistId) => {
 
   const topTracks = await getArtistTopTracks.json();
   const tracks = [];
-  // topTracks.tracks.forEach((song) => getAudioFeatures(song.id, song.name, artistName));
     for (let track of topTracks.tracks) {
       tracks.push(track.id)
     }
@@ -75,5 +73,5 @@ const getTopTracks = async (artistId) => {
 }
 
 
-export { getPlaylist, getUser, getSongs, getTopTracks };
+export { getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures };
 
