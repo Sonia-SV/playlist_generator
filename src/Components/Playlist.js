@@ -44,7 +44,6 @@ const useStyles = makeStyles((theme) => ({
 
 function Playlist(props) {
   const [songs, setSongs] = useState([]);
-  const [randomSongs, setRandomSongs] = useState([]);
   const [isHappy, setIsHappy] = useState('');
   const [topTracksList, setTopTracksList] = useState([]);
   const classes = useStyles();
@@ -53,11 +52,8 @@ function Playlist(props) {
 
 
   const getTarget = async (ev) => {
-     
-  //  getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
 
   getSongs(props.list.tracks.href).then((songs) => {
-
 
     if(songs.items.length > 20) {
 
@@ -67,19 +63,36 @@ function Playlist(props) {
         let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
         randomSongsIndex.push(randomIndex);
         }
-
         setSongs(randomSongsIndex)
     } else {
       setSongs(songs.items);
     }
 
   });
-
     getMood(ev);
+    saveTopTracks();
+
   }
 
+  const saveTopTracks = () => {
 
-  console.log(songs);
+    const prueba = [];
+
+    if(songs.length > 0) {
+      songs.forEach((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => prueba.push(topTrackList))
+      )
+      
+    }
+    console.log(prueba)
+    
+  }
+
+  console.log(topTracksList);
+
+
+
+
+
 
   const setMood = (clickedId) => {
     if(clickedId === 'happy') {
