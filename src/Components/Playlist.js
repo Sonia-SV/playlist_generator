@@ -46,7 +46,7 @@ function Playlist(props) {
   const [songs, setSongs] = useState([]);
   const [randomSongs, setRandomSongs] = useState([]);
   const [isHappy, setIsHappy] = useState('');
-  // const [topTracksList, setTopTracksList] = useState([]);
+  const [topTracksList, setTopTracksList] = useState([]);
   const classes = useStyles();
   // const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
@@ -88,26 +88,17 @@ function Playlist(props) {
     }
   }, [songs]);
 
-//   const topTracks = () => {
-//     console.log('Top tracks');
-//     const songList = randomSongs !== [] ? randomSongs : songs;
-//     if(songList.length > 0) {
-//       console.log(songList);
-//       songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList(topTrackList)));
-//   }
-// }
-// topTracks();
-// console.log(topTracksList);
+  //Deberíamos tener un array de arrays
+  useEffect(() => {
+  const songList = randomSongs.length > 0 ? [...randomSongs] : [...songs];
+  if (songList.length > 0) {
+    console.log(songList);
+    songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList([...topTrackList])));
+  }
+}, [songs, randomSongs]);
 
 
-
-//   songs.items.map((song) => getTopTracks(song.track.artists[0].id, song.track.artists[0].name));
-// console.log(songs);
-// }
-
-
-
-
+console.log(topTracksList);
 
 
 
