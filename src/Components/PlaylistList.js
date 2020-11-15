@@ -7,7 +7,7 @@ function PlaylistList(props) {
     const singlePlaylist = props.playlist.map((list) => {
     return (
       <Playlist
-        list={list} key={list.id}
+        list={list} key={list.id} user={props.user}
       />
     );
   });

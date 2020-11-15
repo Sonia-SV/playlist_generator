@@ -6,7 +6,7 @@ function UserSpace(props) {
   return (
     <>
       <Navbar/>
-      <PlaylistList playlist={props.playlist}/>
+      <PlaylistList playlist={props.playlist} user={props.user}/>
       </>
   );
 }

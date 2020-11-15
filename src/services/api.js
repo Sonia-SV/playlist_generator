@@ -8,8 +8,6 @@ const headers = new Headers({
 });
 
 
-
-
 const user = new Request(`https://api.spotify.com/v1/me`, {
     method: 'GET',
     headers,
@@ -72,6 +70,32 @@ const getTopTracks = async (artistId) => {
   return tracks;
 }
 
+  const postPlaylist = async (name, mood, userId, tracks) => {
+    // Create empty playlist and retrieve endpoint
+    const emptyPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+      method: 'POST',
+      body: JSON.stringify({
+        'name': name + ' ' + (mood === true ? 'Anxiety style' : 'Depression style'),
+        'public': false
+      }),
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${hash.access_token}`
+      }
+    })
+    .then(response => response.json())
+    .then(async response => {
+      console.log(response)
+      // Add tracks to playlist
+      // if (tracks.length > 100) error("Playlist too large for one call");
+      const fillPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${response.id}/tracks?uris=${tracks}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${hash.access_token}`
+        },
+      });
+    });
+  }
 
-export { getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures };
-
+export { getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist };

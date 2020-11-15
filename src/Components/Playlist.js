@@ -9,7 +9,7 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { getSongs, getTopTracks, getAudioFeatures } from '../services/api';
+import { getSongs, getTopTracks, getAudioFeatures, postPlaylist } from '../services/api';
 import MoodList from './MoodList';
 
 const useStyles = makeStyles((theme) => ({
@@ -39,6 +39,7 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Playlist(props) {
+  const [currentPlaylist, setCurrentPlaylist] = useState('');
   const [songs, setSongs] = useState([]);
   const [isHappy, setIsHappy] = useState('');
   const [topTracksList, setTopTracksList] = useState([]);
@@ -46,9 +47,8 @@ function Playlist(props) {
   // const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
 
-
   const getTarget = async (ev) => {
-
+  setCurrentPlaylist(props.list.name);
   getSongs(props.list.tracks.href).then((songs) => {
 
     if(songs.items.length > 20) {
@@ -86,7 +86,6 @@ const saveAudioFeatures = async () => {
     const artistInfo = {};
     for (let song of artist) {
       const features = await getAudioFeatures(song);
-      console.log(features)
       const mood = isHappy ? features.danceability : features.valence;
       artistInfo[features.id] = mood;
     }
@@ -94,8 +93,12 @@ const saveAudioFeatures = async () => {
     const keysSorted = Object.keys(artistInfo).sort(function(a,b){return artistInfo[isHappy ? b : a]-artistInfo[isHappy ? a : b]});
     songsToPlaylist.push(keysSorted[0]);
   }
-};
+  const uris = songsToPlaylist.map((track) => `spotify:track:${track}`).join(',')
 
+
+  if(songsToPlaylist.length > 0){
+    const createPlaylist = await postPlaylist(currentPlaylist, isHappy, props.user, uris)};
+};
 
   const setMood = (clickedId) => {
     if(clickedId === 'happy') {

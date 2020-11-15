@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from 'react';
+// import { Route, Switch } from 'react-router-dom';
 import Login from './Login';
 import UserSpace from './UserSpace';
 import { getTokenFromUrl } from '../services/spotify';
-import { getUser, getPlaylist } from '../services/api';
+import { getUser, getPlaylist, postPlaylist } from '../services/api';
 
 function App() {
 const [thereIsToken, setThereIsToken] = useState(false);
@@ -24,11 +25,9 @@ useEffect(() => {
     }
     }
 }, [hash.access_token, thereIsToken, user]);
-
   return (
     <div className="app">
-      {thereIsToken ? <UserSpace playlist={playlist}/> : <Login />}
- 
+      {thereIsToken ? <UserSpace playlist={playlist} user={user}/> : <Login />}
     </div>
   );
 };
