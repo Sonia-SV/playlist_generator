@@ -52,27 +52,34 @@ function Playlist(props) {
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
 
 
-  const getTarget = (ev) => {
-    getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
+  const getTarget = async (ev) => {
+     
+  //  getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
+
+  getSongs(props.list.tracks.href).then((songs) => {
+
+
+    if(songs.items.length > 20) {
+
+      const randomSongsIndex = [];
+
+      for (let i = 0; i < 20; i++) {
+        let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
+        randomSongsIndex.push(randomIndex);
+        }
+
+        setSongs(randomSongsIndex)
+    } else {
+      setSongs(songs.items);
+    }
+
+  });
+
     getMood(ev);
-
-    const songList = randomSongs !== [] ? randomSongs : songs;
-
-    if(songList.length > 0) {
-      console.log(songList);
-     songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList([...topTrackList])));
-  } else {
-    console.log('no tengo lista')
   }
 
-  console.log(topTracksList);
 
-  }
-
-  // console.log(songs);
-  // console.log(randomSongs);
-  console.log(topTracksList);
-
+  console.log(songs);
 
   const setMood = (clickedId) => {
     if(clickedId === 'happy') {
@@ -89,20 +96,6 @@ function Playlist(props) {
     let clickedId = ev.currentTarget.id;
     setMood(clickedId);
   }
-
-//SI EXISTE RANDOMSONGS SE REALIZA LA PETICIÓN CON RANDOM SONGS, SI NO SE HACE LA PETICIÓN CON SONGS.
-  useEffect(() => {
-    if(songs !== []) {
-      const randomSongsIndex = [];
-      if (songs.length > 20) {
-      for (let i = 0; i < 20; i++) {
-        let randomIndex = songs[Math.floor(Math.random() * songs.length)];
-        randomSongsIndex.push(randomIndex);
-        }
-      setRandomSongs(randomSongsIndex);
-      }
-    }
-  }, [songs]);
 
 
 //   const topTracks = async  () => {
