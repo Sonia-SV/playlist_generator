@@ -68,9 +68,9 @@ const getTopTracks = async (artistId) => {
   const topTracks = await getArtistTopTracks.json();
   const tracks = [];
   // topTracks.tracks.forEach((song) => getAudioFeatures(song.id, song.name, artistName));
-  for (let track of topTracks.tracks) {
-    tracks.push(track.id)
-  }
+    for (let track of topTracks.tracks) {
+      tracks.push(track.id)
+    }
   return tracks;
 }
 

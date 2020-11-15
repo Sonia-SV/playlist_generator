@@ -46,7 +46,7 @@ function Playlist(props) {
   const [songs, setSongs] = useState([]);
   const [randomSongs, setRandomSongs] = useState([]);
   const [isHappy, setIsHappy] = useState('');
-  // const [topTracksList, setTopTracksList] = useState([]);
+  const [topTracksList, setTopTracksList] = useState([]);
   const classes = useStyles();
   // const theme = useTheme();
   const cover = props.list.images[0] !== undefined ? props.list.images[0].url : 'https://via.placeholder.com/640';
@@ -55,7 +55,23 @@ function Playlist(props) {
   const getTarget = (ev) => {
     getSongs(props.list.tracks.href).then((songs) => setSongs(songs.items));
     getMood(ev);
+
+    const songList = randomSongs !== [] ? randomSongs : songs;
+
+    if(songList.length > 0) {
+      console.log(songList);
+     songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList([...topTrackList])));
+  } else {
+    console.log('no tengo lista')
   }
+
+  console.log(topTracksList);
+
+  }
+
+  // console.log(songs);
+  // console.log(randomSongs);
+  console.log(topTracksList);
 
 
   const setMood = (clickedId) => {
@@ -88,12 +104,14 @@ function Playlist(props) {
     }
   }, [songs]);
 
-//   const topTracks = () => {
+
+//   const topTracks = async  () => {
 //     console.log('Top tracks');
 //     const songList = randomSongs !== [] ? randomSongs : songs;
+//     // console.log(songList.length);
 //     if(songList.length > 0) {
 //       console.log(songList);
-//       songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList(topTrackList)));
+//       await songList.map((song) => getTopTracks(song.track.artists[0].id).then((topTrackList) => setTopTracksList(topTrackList)));
 //   }
 // }
 // topTracks();
