@@ -2,12 +2,15 @@ import React from 'react';
 import Playlist from './Playlist';
 import Moodlist from './MoodList';
 import Grid from '@material-ui/core/Grid';
+import { useStateValue } from "../Context/StateProvider";
 
-function PlaylistList(props) {
-    const singlePlaylist = props.playlist.map((list) => {
+
+function PlaylistList() {
+  const [{playlists}] = useStateValue();
+    const singlePlaylist = playlists.map((list) => {
     return (
       <Playlist
-        list={list} key={list.id} user={props.user}
+        list={list} key={list.id}
       />
     );
   });
@@ -16,7 +19,8 @@ function PlaylistList(props) {
     <Grid container direction="row" justify="center"
     alignItems="center"
     spacing={3}>
-    {singlePlaylist}</Grid>
+    {singlePlaylist}
+    </Grid>
     </>
   );
 }

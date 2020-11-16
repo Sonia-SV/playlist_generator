@@ -17,7 +17,7 @@ const getUser = async() => {
   const getUserInfo = await fetch(user);
   const userId = await getUserInfo.json();
 
-  return userId.id;
+  return userId;
 }
 
 // const request = new Request(`https://api.spotify.com/v1/users/${userId.id}/playlists`, {
@@ -29,12 +29,12 @@ const getUser = async() => {
 
 const getPlaylist = async (user) => {
 
- const getUserPlaylist = await fetch(`https://api.spotify.com/v1/users/${user}/playlists`, {
-   method: 'GET',
+  const getUserPlaylist = await fetch(`https://api.spotify.com/v1/users/${user}/playlists`, {
+    method: 'GET',
     headers,
- });
+  });
   const playlists = await getUserPlaylist.json();
-  
+
     return playlists;
 };
 const getSongs = async (url) => {
@@ -49,9 +49,9 @@ const getUserSongs = await fetch(url, {
 
 const getAudioFeatures = async (songId) => {
   const getSongAudioFeatures = await fetch(`https://api.spotify.com/v1/audio-features/${songId}`, {
-   method: 'GET',
+    method: 'GET',
     headers,
- });
+  });
   const audioFeatures = await getSongAudioFeatures.json();
   return audioFeatures
 }
