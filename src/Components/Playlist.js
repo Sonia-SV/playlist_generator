@@ -51,13 +51,16 @@ function Playlist({list}) {
           current_playlist: list.name,
         });
     getSongs(list.tracks.href).then((songs) => {
+      const artistSongsIds = songs.items.map((song) => song.track.artists[0].id);
+      const setArtistId = new Set(artistSongsIds);
+      const arrayArtistId = Array.from(setArtistId);
 
-      if(songs.items.length > 20) {
+      if(arrayArtistId.length > 10) {
 
         const randomSongsIndex = [];
 
-        for (let i = 0; i < 20; i++) {
-          let randomIndex = songs.items[Math.floor(Math.random() * songs.items.length)];
+        for (let i = 0; i < 10; i++) {
+          let randomIndex = arrayArtistId[Math.floor(Math.random() * arrayArtistId.length)];
           randomSongsIndex.push(randomIndex);
         }
         dispatch({
@@ -67,7 +70,7 @@ function Playlist({list}) {
       } else {
         dispatch({
           type: "SET_SONGS",
-          songs: songs.items,
+          songs: arrayArtistId,
         });
       }
 
@@ -80,7 +83,7 @@ function Playlist({list}) {
   const saveTopTracks = async () => {
     const topTracks = [];
     for (let song of songs) {
-      const tracks = await getTopTracks(song.track.artists[0].id);
+      const tracks = await getTopTracks(song);
       topTracks.push(tracks);
     };
     dispatch({
