@@ -135,7 +135,7 @@ function Playlist({list}) {
   };
 
   const getMood = (ev) => {
-    let clickedId = ev.target.id;
+    let clickedId = ev.currentTarget.id;
     setMood(clickedId);
   };
 
