@@ -46,11 +46,14 @@ function Playlist({list}) {
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
 
   const getTarget = async (ev) => {
+
+    getMood(ev);
+    
     dispatch({
           type: "SET_CURRENT_PLAYLIST",
           current_playlist: list.name,
         });
-    getSongs(list.tracks.href).then((songs) => {
+      const songs = await getSongs(list.tracks.href)
       const artistSongsIds = songs.items.map((song) => song.track.artists[0].id);
       const setArtistId = new Set(artistSongsIds);
       const arrayArtistId = Array.from(setArtistId);
@@ -72,10 +75,8 @@ function Playlist({list}) {
           type: "SET_SONGS",
           songs: arrayArtistId,
         });
-      }
+  };
 
-  });
-    getMood(ev);
     const fetchTopTracks = await saveTopTracks();
     const fetchAudioFeatures = await saveAudioFeatures();
   };
@@ -134,7 +135,7 @@ function Playlist({list}) {
   };
 
   const getMood = (ev) => {
-    let clickedId = ev.currentTarget.id;
+    let clickedId = ev.target.id;
     setMood(clickedId);
   };
 
