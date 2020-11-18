@@ -1,4 +1,6 @@
 import { getTokenFromUrl } from './spotify';
+// import happy from '../images/cover-happy.jpg';
+// import sad from '../images/cover-sad.jpg';
 
 const hash = getTokenFromUrl();
 
@@ -63,10 +65,11 @@ const getTopTracks = async (artistId) => {
 
 const postPlaylist = async (name, mood, userId, tracks) => {
   // Create empty playlist and retrieve endpoint
-  const emptyPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists`, {
+  const emptyPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/`, {
     method: 'POST',
     body: JSON.stringify({
       name: `${name} ${mood === true ? 'Anxiety style' : 'Depression style'}`,
+      // images: mood === true ? {happy} : {sad},
       public: false,
     }),
     headers: {
