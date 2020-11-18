@@ -1,3 +1,4 @@
+import { PlaylistAddCheckOutlined } from '@material-ui/icons';
 import { getTokenFromUrl } from './spotify';
 // import happy from '../images/cover-happy.jpg';
 // import sad from '../images/cover-sad.jpg';
@@ -69,7 +70,6 @@ const postPlaylist = async (name, mood, userId, tracks) => {
     method: 'POST',
     body: JSON.stringify({
       name: `${name} ${mood === true ? 'Anxiety style' : 'Depression style'}`,
-      // images: mood === true ? {happy} : {sad},
       public: false,
     }),
     headers: {
@@ -89,6 +89,25 @@ const postPlaylist = async (name, mood, userId, tracks) => {
       });
     });
 };
+
+// const postPlaylistImage = async (playlistId) => {
+
+
+//   const playlistImage = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/images`, {
+//     method: 'PUT',
+//     body: JSON.stringify({
+//         images: mood === true ? {happy} : {sad},
+//     }),
+//     headers: {
+//       'Content-Type': 'image/jpg',
+//       Authorization: `Bearer ${hash.access_token}`,
+//     },
+//   })
+
+
+
+// }
+
 
 export {
   getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist,

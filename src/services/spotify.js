@@ -10,10 +10,11 @@ const scopes = [
   // 'user-read-playback-state',
   // 'user-top-read',
   // 'user-modify-playback-state',
+  'ugc-image-upload',
   'user-library-read',
   'playlist-read-private',
   'playlist-modify-private',
- ' playlist-modify-public',
+  'playlist-modify-public',
 ];
 
 export const getTokenFromUrl = () => window.location.hash
