@@ -1,0 +1,7 @@
+//MEDIAQUERY
+
+@mixin media($width) {
+  @media all and (min-width: $width) {
+    @content;
+  }
+}

@@ -1,0 +1,16 @@
+.login {
+  font-family: $font-main;
+  display: grid;
+  background-color: $color-main;
+  height: 100vh;
+  place-items: center;
+
+  &__button {
+    color: $color-light;
+    text-decoration: none;
+    padding: 20px;
+    border-radius: 99px;
+    font-weight: 800;
+    background-color: $color-accent;
+  }
+}
