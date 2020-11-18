@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 // import { useTheme } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
@@ -40,66 +40,70 @@ const useStyles = makeStyles((theme) => ({
 }));
 
 function Playlist({list}) {
-  const [{user, current_playlist, songs, is_happy, top_tracks_list}, dispatch] = useStateValue();
+  const [{user, current_playlist, is_happy }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
 
-  const getTarget = async (ev) => {
-
+  const getTarget = (ev) => {
     getMood(ev);
-    
+    setCurrentPlaylist();
+    if (current_playlist !== null && is_happy !== ''){
+      console.log('async await mal');
+      startApiFetch();
+    }
+  }
+  const startApiFetch = async () => {
+    const artistFromPlaylist = await getSongsFromPlaylist();
+    const fetchTopTracks = await saveTopTracks(artistFromPlaylist);
+    const fetchAudioFeatures = await saveAudioFeatures(fetchTopTracks);
+    const postPlaylist = await createPlaylist(fetchAudioFeatures);
+  };
+
+  const setCurrentPlaylist = () => {
     dispatch({
           type: "SET_CURRENT_PLAYLIST",
           current_playlist: list.name,
         });
-      const songs = await getSongs(list.tracks.href)
-      const artistSongsIds = songs.items.map((song) => song.track.artists[0].id);
-      const setArtistId = new Set(artistSongsIds);
-      const arrayArtistId = Array.from(setArtistId);
+  }
 
-      if(arrayArtistId.length > 10) {
+  const getSongsFromPlaylist = async () => {
+    const songs = await getSongs(list.tracks.href)
+    const artistSongsIds = songs.items.map((song) => song.track.artists[0].id);
+    const setArtistId = new Set(artistSongsIds);
+    const arrayArtistId = Array.from(setArtistId);
 
-        const randomSongsIndex = [];
+    if(arrayArtistId.length > 10) {
 
-        for (let i = 0; i < 10; i++) {
-          let randomIndex = arrayArtistId[Math.floor(Math.random() * arrayArtistId.length)];
-          randomSongsIndex.push(randomIndex);
-        }
-        dispatch({
-          type: "SET_SONGS",
-          songs: randomSongsIndex,
-        });
-      } else {
-        dispatch({
-          type: "SET_SONGS",
-          songs: arrayArtistId,
-        });
-  };
+      const randomSongsIndex = [];
 
-    const fetchTopTracks = await saveTopTracks();
-    const fetchAudioFeatures = await saveAudioFeatures();
-  };
-
-  const saveTopTracks = async () => {
+      for (let i = 0; i < 10; i++) {
+        let randomIndex = arrayArtistId[Math.floor(Math.random() * arrayArtistId.length)];
+        randomSongsIndex.push(randomIndex);
+      }
+      return randomSongsIndex;
+    } else {
+      return arrayArtistId;
+    };
+  }
+  const saveTopTracks = async (songs) => {
     const topTracks = [];
     for (let song of songs) {
       const tracks = await getTopTracks(song);
       topTracks.push(tracks);
     };
-    dispatch({
-      type: 'SET_TOP_TRACKS_LIST',
-      top_tracks_list: topTracks
-    })
+    return topTracks;
   };
 
   const createPlaylist = async (arrayOfSongs) => {
+    console.log(current_playlist);
     const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',')
     if(arrayOfSongs.length > 0){
       const createPlaylist = await postPlaylist(current_playlist, is_happy, user, uris)};
   };
 
-  const saveAudioFeatures = async () => {
+  const saveAudioFeatures = async (top_tracks_list) => {
+    console.log(is_happy);
     const songsToPlaylist = [];
     for (let artist of top_tracks_list) {
       const artistInfo = {};
@@ -115,7 +119,7 @@ function Playlist({list}) {
 
       songsToPlaylist.push(keysSorted[0]);
     };
-    const postPlaylist = await createPlaylist(songsToPlaylist);
+    return songsToPlaylist;
   }
 
   const setMood = (clickedId) => {

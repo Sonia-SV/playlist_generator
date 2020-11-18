@@ -31,21 +31,11 @@ const reducer = (state, action) => {
                     ...state,
                     current_playlist: action.current_playlist,
                 };
-            case "SET_SONGS":
-                return {
-                    ...state,
-                    songs: action.songs,
-                };
             case "SET_IS_HAPPY":
                 return {
                     ...state,
                     is_happy: action.is_happy,
                 };
-            case 'SET_TOP_TRACKS_LIST': 
-                return {
-                    ...state,
-                    top_tracks_list: action.top_tracks_list,
-                }
         default:
             return state;
     }
