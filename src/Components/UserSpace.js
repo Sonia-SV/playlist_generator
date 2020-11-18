@@ -1,12 +1,14 @@
 import React from 'react';
-import Navbar from './Navbar';
+import Header from './Header';
 import PlaylistList from './PlaylistList';
 
 function UserSpace() {
   return (
     <>
-      <Navbar />
+      <Header />
+      <main className="main">
       <PlaylistList />
+      </main>
     </>
   );
 }

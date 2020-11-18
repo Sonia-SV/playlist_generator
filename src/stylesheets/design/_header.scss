@@ -1,6 +1,13 @@
-.header {
-  width: 450px;
-  & img {
-    width: 100%;
+header {
+  width: 100vw;
+  background-color: $color-main;
+  display: flex;
+  justify-content: center;
+  & .header__img {
+    width: 450px;
+
+    & img {
+      width: 100%;
+    }
   }
 }
