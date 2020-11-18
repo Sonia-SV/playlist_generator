@@ -5,9 +5,9 @@ import Typography from '@material-ui/core/Typography'
 const NavBar = () => {
     return(
         <div>
-        <AppBar position="static">
+        <AppBar position='static'>
             <Toolbar>
-                <Typography variant="h6" color="inherit">
+                <Typography variant='h6' color='inherit'>
                 Spotify de Miriam y Sonia
                 </Typography>
             </Toolbar>

@@ -11,27 +11,27 @@ export const initialState = {
 const reducer = (state, action) => {
     console.log(action);
     switch (action.type) {
-        case "SET_THERE_IS_TOKEN":
+        case 'SET_THERE_IS_TOKEN':
             return {
                 ...state,
                 there_is_token: action.there_is_token,
             };
-        case "SET_USER":
+        case 'SET_USER':
             return {
                 ...state,
                 user: action.user,
             };
-        case "SET_PLAYLISTS":
+        case 'SET_PLAYLISTS':
             return {
                 ...state,
                 playlists: action.playlists,
         };
-        case "SET_CURRENT_PLAYLIST":
+        case 'SET_CURRENT_PLAYLIST':
                 return {
                     ...state,
                     current_playlist: action.current_playlist,
                 };
-            case "SET_IS_HAPPY":
+            case 'SET_IS_HAPPY':
                 return {
                     ...state,
                     is_happy: action.is_happy,

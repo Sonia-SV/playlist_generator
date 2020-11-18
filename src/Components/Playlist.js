@@ -9,7 +9,7 @@ import Typography from '@material-ui/core/Typography';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import { getSongs, getTopTracks, getAudioFeatures, postPlaylist } from '../services/api';
-import { useStateValue } from "../Context/StateProvider";
+import { useStateValue } from '../Context/StateProvider';
 import MoodList from './MoodList';
 
 const useStyles = makeStyles((theme) => ({
@@ -118,15 +118,15 @@ function Playlist( { list } ) {
       <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
-            <Typography component="h5" variant="h5">
+            <Typography component='h5' variant='h5'>
               {list.name}
             </Typography>
           </CardContent>
           <div>
-            <IconButton aria-label="satisfied" onClick={getTarget} id="happy" >
+            <IconButton aria-label='satisfied' onClick={getTarget} id='happy' >
               <SentimentVerySatisfiedIcon />
             </IconButton>
-            <IconButton aria-label="dissatisfied" onClick={getTarget} id="sad">
+            <IconButton aria-label='dissatisfied' onClick={getTarget} id='sad'>
               <SentimentVeryDissatisfiedIcon />
             </IconButton>
           </div>

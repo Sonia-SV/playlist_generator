@@ -2,7 +2,7 @@ import React from 'react';
 import Playlist from './Playlist';
 import Moodlist from './MoodList';
 import Grid from '@material-ui/core/Grid';
-import { useStateValue } from "../Context/StateProvider";
+import { useStateValue } from '../Context/StateProvider';
 
 
 function PlaylistList() {
@@ -16,8 +16,8 @@ function PlaylistList() {
   });
   return (
     <>
-    <Grid container direction="row" justify="center"
-    alignItems="center"
+    <Grid container direction='row' justify='center'
+    alignItems='center'
     spacing={3}>
     {singlePlaylist}
     </Grid>

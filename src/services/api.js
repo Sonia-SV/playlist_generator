@@ -87,7 +87,7 @@ const getTopTracks = async (artistId) => {
     .then(async response => {
       console.log(response)
       // Add tracks to playlist
-      // if (tracks.length > 100) error("Playlist too large for one call");
+      // if (tracks.length > 100) error('Playlist too large for one call');
       const fillPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${response.id}/tracks?uris=${tracks}`, {
         method: 'POST',
         headers: {

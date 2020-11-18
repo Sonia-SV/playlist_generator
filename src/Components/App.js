@@ -3,7 +3,7 @@ import Login from './Login';
 import UserSpace from './UserSpace';
 import { getTokenFromUrl } from '../services/spotify';
 import { getUser, getPlaylist } from '../services/api';
-import { useStateValue } from "../Context/StateProvider";
+import { useStateValue } from '../Context/StateProvider';
 
 function App() {
   const [{user, there_is_token}, dispatch] = useStateValue();
@@ -12,7 +12,7 @@ function App() {
   useEffect(() => {
     if (hash.access_token !== undefined) {
       dispatch({
-          type: "SET_THERE_IS_TOKEN",
+          type: 'SET_THERE_IS_TOKEN',
           there_is_token: true,
         })
     };
@@ -20,24 +20,24 @@ function App() {
     if(there_is_token) {
       getUser().then((_user) => {
         dispatch({
-          type: "SET_USER",
+          type: 'SET_USER',
           user: _user.id,
         })
       });
       if(user) {
         getPlaylist(user).then((_playlists) => {
           dispatch({
-          type: "SET_PLAYLISTS",
+          type: 'SET_PLAYLISTS',
           playlists: _playlists.items,
         });
       });
-        window.location.hash = "";
+        window.location.hash = '';
       }
       }
   }, [hash.access_token, there_is_token, user]);
 
     return (
-      <div className="app">
+      <div className='app'>
         {there_is_token ? <UserSpace/> : <Login />}
       </div>
     );
