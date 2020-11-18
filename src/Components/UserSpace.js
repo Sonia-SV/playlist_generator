@@ -5,9 +5,9 @@ import PlaylistList from './PlaylistList';
 function UserSpace() {
   return (
     <>
-      <Navbar/>
-      <PlaylistList/>
-      </>
+      <Navbar />
+      <PlaylistList />
+    </>
   );
 }
 

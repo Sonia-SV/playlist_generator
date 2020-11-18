@@ -1,44 +1,44 @@
 export const initialState = {
-    there_is_token: false,
-    user: null,
-    playlists: [],
-    current_playlist: null,
-    songs: [],
-    is_happy: false,
-    top_tracks_list: [],
+  there_is_token: false,
+  user: null,
+  playlists: [],
+  current_playlist: null,
+  songs: [],
+  is_happy: false,
+  top_tracks_list: [],
 };
 
 const reducer = (state, action) => {
-    console.log(action);
-    switch (action.type) {
-        case "SET_THERE_IS_TOKEN":
-            return {
-                ...state,
-                there_is_token: action.there_is_token,
-            };
-        case "SET_USER":
-            return {
-                ...state,
-                user: action.user,
-            };
-        case "SET_PLAYLISTS":
-            return {
-                ...state,
-                playlists: action.playlists,
-        };
-        case "SET_CURRENT_PLAYLIST":
-                return {
-                    ...state,
-                    current_playlist: action.current_playlist,
-                };
-            case "SET_IS_HAPPY":
-                return {
-                    ...state,
-                    is_happy: action.is_happy,
-                };
-        default:
-            return state;
-    }
+  console.log(action);
+  switch (action.type) {
+    case 'SET_THERE_IS_TOKEN':
+      return {
+        ...state,
+        there_is_token: action.there_is_token,
+      };
+    case 'SET_USER':
+      return {
+        ...state,
+        user: action.user,
+      };
+    case 'SET_PLAYLISTS':
+      return {
+        ...state,
+        playlists: action.playlists,
+      };
+    case 'SET_CURRENT_PLAYLIST':
+      return {
+        ...state,
+        current_playlist: action.current_playlist,
+      };
+    case 'SET_IS_HAPPY':
+      return {
+        ...state,
+        is_happy: action.is_happy,
+      };
+    default:
+      return state;
+  }
 };
 
 export default reducer;

@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
@@ -8,8 +8,10 @@ import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
-import { getSongs, getTopTracks, getAudioFeatures, postPlaylist } from '../services/api';
-import { useStateValue } from "../Context/StateProvider";
+import {
+  getSongs, getTopTracks, getAudioFeatures, postPlaylist,
+} from '../services/api';
+import { useStateValue } from '../Context/StateProvider';
 import MoodList from './MoodList';
 
 const useStyles = makeStyles((theme) => ({
@@ -38,8 +40,8 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-function Playlist( { list } ) {
-  const [{user, current_playlist, is_happy }, dispatch] = useStateValue();
+function Playlist({ list }) {
+  const [{ user, current_playlist, is_happy }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
@@ -49,72 +51,71 @@ function Playlist( { list } ) {
     const playlistName = list.name;
     const artistFromPlaylist = await getSongsFromPlaylist();
     const fetchTopTracks = await saveTopTracks(artistFromPlaylist);
-    const fetchAudioFeatures = await saveAudioFeatures(fetchTopTracks);
-    const postPlaylist = await createPlaylist(fetchAudioFeatures, mood, playlistName);
-  }
+    const fetchAudioFeatures = await saveAudioFeatures(fetchTopTracks, mood);
+    const postList = await createPlaylist(fetchAudioFeatures, mood, playlistName);
+  };
 
   const getSongsFromPlaylist = async () => {
-    const songs = await getSongs(list.tracks.href)
+    const songs = await getSongs(list.tracks.href);
     const artistSongsIds = songs.items.map((song) => song.track.artists[0].id);
     const setArtistId = new Set(artistSongsIds);
     const arrayArtistId = Array.from(setArtistId);
 
-    if(arrayArtistId.length > 10) {
-
+    if (arrayArtistId.length > 10) {
       const randomSongsIndex = [];
 
-      for (let i = 0; i < 10; i++) {
-        let randomIndex = arrayArtistId[Math.floor(Math.random() * arrayArtistId.length)];
+      for (let i = 0; i < 10; i += 1) {
+        const randomIndex = arrayArtistId[Math.floor(Math.random() * arrayArtistId.length)];
         randomSongsIndex.push(randomIndex);
       }
       return randomSongsIndex;
-    } else {
-      return arrayArtistId;
-    };
-  }
+    }
+    return arrayArtistId;
+  };
+
   const saveTopTracks = async (songs) => {
     const topTracks = [];
     for (let song of songs) {
       const tracks = await getTopTracks(song);
       topTracks.push(tracks);
-    };
+    }
     return topTracks;
   };
 
   const createPlaylist = async (arrayOfSongs, mood, playlistName) => {
     console.log(current_playlist);
-    const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',')
-    if(arrayOfSongs.length > 0){
-      const createPlaylist = await postPlaylist(playlistName, mood, user, uris)};
+    const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',');
+    if (arrayOfSongs.length > 0) {
+      const createList = await postPlaylist(playlistName, mood, user, uris);
+    }
   };
 
-  const saveAudioFeatures = async (top_tracks_list) => {
-    console.log(is_happy);
+  const saveAudioFeatures = async (top_tracks_list, mood) => {
     const songsToPlaylist = [];
-    for (let artist of top_tracks_list) {
+    for (const artist of top_tracks_list) {
       const artistInfo = {};
-        for (let song of artist) {
-          const features = await getAudioFeatures(song);
-          const mood = is_happy ? features.danceability : features.valence;
-          artistInfo[features.id] = mood;
-        };
+      for (let song of artist) {
+        const features = await getAudioFeatures(song);
+        const moodSelector = mood ? features.danceability : features.valence;
+        artistInfo[features.id] = moodSelector ;
+      }
 
-    const keysSorted = Object.keys(artistInfo)
-      .sort(function(a,b){
-      return artistInfo[is_happy ? b : a]-artistInfo[is_happy ? a : b]});
-
+      const keysSorted = Object.keys(artistInfo)
+        .sort (function (a, b) {
+          return artistInfo[mood ? b : a] - artistInfo[mood ? a : b];
+        });
       songsToPlaylist.push(keysSorted[0]);
-    };
+    }
     return songsToPlaylist;
   };
 
   const getMood = (ev) => {
-    let clickedId = ev.currentTarget.id;
-    return clickedId === 'happy' ? true : false;
+    const clickedId = ev.currentTarget.id;
+    return clickedId === 'happy';
   };
 
   return (
-    <Grid item xs={12} sm={6} md={4} >
+    <Grid item xs={12} sm={6} md={4}>
       <Card className={classes.root}>
         <div className={classes.details}>
           <CardContent className={classes.content}>
@@ -123,7 +124,7 @@ function Playlist( { list } ) {
             </Typography>
           </CardContent>
           <div>
-            <IconButton aria-label="satisfied" onClick={getTarget} id="happy" >
+            <IconButton aria-label="satisfied" onClick={getTarget} id="happy">
               <SentimentVerySatisfiedIcon />
             </IconButton>
             <IconButton aria-label="dissatisfied" onClick={getTarget} id="sad">
@@ -137,9 +138,8 @@ function Playlist( { list } ) {
           title={list.name}
         />
       </Card>
-      </Grid>
+    </Grid>
   );
-};
+}
 
 export default Playlist;
-
