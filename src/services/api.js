@@ -1,7 +1,8 @@
 import { PlaylistAddCheckOutlined } from '@material-ui/icons';
 import { getTokenFromUrl } from './spotify';
-import happy from '../images/cover-happy.jpg';
-import sad from '../images/cover-sad.jpg';
+import { happyBase64, sadBase64 } from '../images/cover-base64'
+// import happy from '../images/cover-happy.jpg';
+// import sad from '../images/cover-sad.jpg';
 
 const hash = getTokenFromUrl();
 
@@ -64,12 +65,12 @@ const getTopTracks = async (artistId) => {
   return tracks;
 };
 
-const postPlaylist = async (name, mood, userId, tracks, playlistId) => {
+const postPlaylist = async (name, mood, userId) => {
   // Create empty playlist and retrieve endpoint
   const emptyPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/`, {
     method: 'POST',
     body: JSON.stringify({
-      name: `${name} ${mood === true ? 'Anxiety style' : 'Depression style'}`,
+      name: `${name} ${mood === true ? '🙃 Mezcladito contento' : '🥺 Mezcladito triste'}`,
       public: false,
     }),
     headers: {
@@ -77,53 +78,37 @@ const postPlaylist = async (name, mood, userId, tracks, playlistId) => {
       Authorization: `Bearer ${hash.access_token}`,
     },
   })
+  const playlistInfo = await emptyPlaylist.json();
+  console.log(playlistInfo);
+  return playlistInfo;
+    // .then((response) => response.json())
+    // .then(async (response) => {
+    //   const playlistImage = await fetch(`https://api.spotify.com/v1/playlists/${response.id}/images`, {
+    //       method: 'PUT',
+    //       body: JSON.stringify({
+    //         images: mood === true ? {happyBase64} : {sadBase64},
+    //       }),
+    //       headers: {
+    //         'Content-Type': 'image/jpg',
+    //         Accept: 'application/json',
+    //         Authorization: `Bearer ${hash.access_token}`,
+    //       },
+    //     });
+    // });
+};
 
-  // const playlistImage = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
-  //   method: 'PUT',
-  //   body: JSON.stringify({
-  //       images: mood === true ? {happy} : {sad},
-  //   }),
-  //   headers: {
-  //     'Content-Type': 'image/jpg',
-  //     Authorization: `Bearer ${hash.access_token}`,
-  //   },
-  // })
 
-
-    .then((response) => response.json())
-    .then(async (response) => {
-      console.log(response);
-      const fillPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${response.id}/tracks?uris=${tracks}`, {
+const postFillPlaylist = async (userId, tracks, playlistId) => {
+ const fillPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/tracks?uris=${tracks}`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
           Authorization: `Bearer ${hash.access_token}`,
         },
       });
-    });
-
-};
-
-
-// const postPlaylistImage = async (playlistId) => {
-
-
-//   const playlistImage = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
-//     method: 'PUT',
-//     body: JSON.stringify({
-//         images: mood === true ? {happy} : {sad},
-//     }),
-//     headers: {
-//       'Content-Type': 'image/jpg',
-//       Authorization: `Bearer ${hash.access_token}`,
-//     },
-//   })
-
-
-
-// }
+}
 
 
 export {
-  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist
+  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist, postFillPlaylist
 };

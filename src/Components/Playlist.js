@@ -8,7 +8,7 @@ import Typography from '@material-ui/core/Typography';
 import SentimentVeryDissatisfiedIcon from '@material-ui/icons/SentimentVeryDissatisfied';
 import SentimentVerySatisfiedIcon from '@material-ui/icons/SentimentVerySatisfied';
 import {
-  getSongs, getTopTracks, getAudioFeatures, postPlaylist,
+  getSongs, getTopTracks, getAudioFeatures, postPlaylist, postFillPlaylist,
 } from '../services/api';
 import { useStateValue } from '../Context/StateProvider';
 import { useStyles, cardStyle } from './Styles';
@@ -17,7 +17,7 @@ import { useStyles, cardStyle } from './Styles';
 
 
 function Playlist({ list }) {
-  const [{ user, current_playlist, is_happy }, dispatch] = useStateValue();
+  const [{ user, playlists }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
@@ -27,8 +27,9 @@ function Playlist({ list }) {
     const playlistName = list.name;
     const artistFromPlaylist = await getSongsFromPlaylist();
     const fetchTopTracks = await saveTopTracks(artistFromPlaylist);
+    const postList = await createPlaylist(mood, playlistName);
     const fetchAudioFeatures = await saveAudioFeatures(fetchTopTracks, mood);
-    const postList = await createPlaylist(fetchAudioFeatures, mood, playlistName);
+    const finishPlaylist = await addSongsPlaylist(fetchAudioFeatures, postList);
   };
 
   const getSongsFromPlaylist = async () => {
@@ -58,13 +59,18 @@ function Playlist({ list }) {
     return topTracks;
   };
 
-  const createPlaylist = async (arrayOfSongs, mood, playlistName) => {
-    console.log(current_playlist);
-    const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',');
-    if (arrayOfSongs.length > 0) {
-      const createList = await postPlaylist(playlistName, mood, user, uris);
-    }
+  const createPlaylist = async (mood, playlistName) => {
+    const createList = await postPlaylist(playlistName, mood, user);
+    return createList.id;
+
   };
+
+  const addSongsPlaylist = async (arrayOfSongs, playlistId) => {
+    const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',');
+        if (arrayOfSongs.length > 0) {
+          postFillPlaylist(user, uris, playlistId)
+        }
+  }
 
   const saveAudioFeatures = async (top_tracks_list, mood) => {
     const songsToPlaylist = [];
@@ -92,7 +98,6 @@ function Playlist({ list }) {
 
   return (
     <Grid item xs={6} sm={6} md={4}
-    spacing={0}
     align="center"
 >
 
