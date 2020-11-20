@@ -1,7 +1,7 @@
 import { PlaylistAddCheckOutlined } from '@material-ui/icons';
 import { getTokenFromUrl } from './spotify';
-// import happy from '../images/cover-happy.jpg';
-// import sad from '../images/cover-sad.jpg';
+import happy from '../images/cover-happy.jpg';
+import sad from '../images/cover-sad.jpg';
 
 const hash = getTokenFromUrl();
 
@@ -64,7 +64,7 @@ const getTopTracks = async (artistId) => {
   return tracks;
 };
 
-const postPlaylist = async (name, mood, userId, tracks) => {
+const postPlaylist = async (name, mood, userId, tracks, playlistId) => {
   // Create empty playlist and retrieve endpoint
   const emptyPlaylist = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/`, {
     method: 'POST',
@@ -77,6 +77,19 @@ const postPlaylist = async (name, mood, userId, tracks) => {
       Authorization: `Bearer ${hash.access_token}`,
     },
   })
+
+  // const playlistImage = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
+  //   method: 'PUT',
+  //   body: JSON.stringify({
+  //       images: mood === true ? {happy} : {sad},
+  //   }),
+  //   headers: {
+  //     'Content-Type': 'image/jpg',
+  //     Authorization: `Bearer ${hash.access_token}`,
+  //   },
+  // })
+
+
     .then((response) => response.json())
     .then(async (response) => {
       console.log(response);
@@ -88,12 +101,14 @@ const postPlaylist = async (name, mood, userId, tracks) => {
         },
       });
     });
+
 };
+
 
 // const postPlaylistImage = async (playlistId) => {
 
 
-//   const playlistImage = await fetch(`https://api.spotify.com/v1/users/${userId}/playlists/${playlistId}/images`, {
+//   const playlistImage = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/images`, {
 //     method: 'PUT',
 //     body: JSON.stringify({
 //         images: mood === true ? {happy} : {sad},
@@ -110,5 +125,5 @@ const postPlaylist = async (name, mood, userId, tracks) => {
 
 
 export {
-  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist,
+  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist
 };
