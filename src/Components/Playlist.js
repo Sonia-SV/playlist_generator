@@ -17,12 +17,13 @@ import { useStyles, cardStyle } from './Styles';
 
 
 function Playlist({ list }) {
-  const [{ user, playlists, is_new_playlist }, dispatch] = useStateValue();
+  const [{ user, playlists, is_mood, is_new_playlist }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
 
   const getTarget = async (ev) => {
+    dispatch({ type: 'SET_MOOD', is_mood: true});
     const mood = getMood(ev);
     const playlistName = list.name;
     const artistFromPlaylist = await getSongsFromPlaylist();
@@ -70,8 +71,8 @@ function Playlist({ list }) {
         if (arrayOfSongs.length > 0) {
           postFillPlaylist(user, uris, playlistId)
         }
-
-        dispatch({ type: 'SET_NEW_PLAYLIST', is_new_playlist: true});
+        dispatch({ type: 'SET_NEW_PLAYLIST', is_new_playlist: true });
+        dispatch({ type: 'NEW_PLAYLIST_ID', new_playlist_id: playlistId })
   }
 
   const saveAudioFeatures = async (top_tracks_list, mood) => {

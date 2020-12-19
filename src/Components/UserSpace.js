@@ -1,6 +1,7 @@
 import React from 'react';
 import Header from './Header';
 import PlaylistList from './PlaylistList';
+import GeneratedPlaylist from './GeneratedPlaylist';
 import { useStateValue } from '../Context/StateProvider';
 
 
@@ -10,30 +11,12 @@ function UserSpace() {
 
   const [{ is_new_playlist }, dispatch] = useStateValue();
 
-
-
-    if(is_new_playlist) {
  return (
   <>
   <Header />
-  <main className="main">
-  ¡Abre tu Spotify, Maricarmen!
-  </main>
+  {is_new_playlist ? <GeneratedPlaylist/> : <PlaylistList />}
 </>
-)
-    } else {
-
-      return (
-      <>
-      <Header />
-      <main className="main">
-
-      <PlaylistList />
-      </main>
-    </>
-      )}
-
-;
+);
 }
 
 export default UserSpace;

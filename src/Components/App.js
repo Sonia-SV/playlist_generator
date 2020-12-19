@@ -6,7 +6,7 @@ import { getUser, getPlaylist } from '../services/api';
 import { useStateValue } from '../Context/StateProvider';
 
 function App() {
-  const [{user, there_is_token}, dispatch] = useStateValue();
+  const [{user, token, there_is_token}, dispatch] = useStateValue();
 
   const hash = getTokenFromUrl();
   useEffect(() => {
@@ -14,6 +14,10 @@ function App() {
       dispatch({
           type: 'SET_THERE_IS_TOKEN',
           there_is_token: true,
+        })
+        dispatch({
+          type: 'TOKEN',
+          token: hash.access_token,
         })
     };
 
@@ -34,7 +38,7 @@ function App() {
         window.location.hash = '';
       }
       }
-  }, [hash.access_token, there_is_token, user]);
+  }, [hash.access_token, there_is_token, user, token]);
 
     return (
       <div className='app'>

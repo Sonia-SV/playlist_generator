@@ -5,11 +5,6 @@ const redirectUri = 'http://localhost:3000/';
 const clientId = 'ca63b73f189140cd8772d476bab71bbd';
 
 const scopes = [
-  // 'user-read-currently-playing',
-  // 'user-read-recently-played',
-  // 'user-read-playback-state',
-  // 'user-top-read',
-  // 'user-modify-playback-state',
   'ugc-image-upload',
   'user-library-read',
   'playlist-read-private',

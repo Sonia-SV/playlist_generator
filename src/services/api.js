@@ -1,8 +1,9 @@
 import { PlaylistAddCheckOutlined } from '@material-ui/icons';
 import { getTokenFromUrl } from './spotify';
-import { happyBase64, sadBase64 } from '../images/cover-base64'
+import { happyBase64, sadBase64 } from '../images/cover-base64';
 // import happy from '../images/cover-happy.jpg';
 // import sad from '../images/cover-sad.jpg';
+
 
 const hash = getTokenFromUrl();
 
@@ -106,9 +107,19 @@ const postFillPlaylist = async (userId, tracks, playlistId) => {
           Authorization: `Bearer ${hash.access_token}`,
         },
       });
-}
+};
+
+const renderNewPlaylist = async (playlistId) => {
+  const getNewPlaylist = await fetch(`https://api.spotify.com/v1/playlists/${playlistId}/tracks`, {
+    method: 'GET',
+    headers,
+  });
+  const songs = await getNewPlaylist.json();
+  return songs;
+};
+// const renderNewPlaylist = async ()
 
 
 export {
-  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist, postFillPlaylist
+  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist, postFillPlaylist, renderNewPlaylist
 };
