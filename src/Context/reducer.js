@@ -4,7 +4,7 @@ export const initialState = {
   playlists: [],
   current_playlist: null,
   songs: [],
-  is_happy: false,
+  is_new_playlist: false,
   top_tracks_list: [],
 };
 
@@ -31,10 +31,10 @@ const reducer = (state, action) => {
         ...state,
         current_playlist: action.current_playlist,
       };
-    case 'SET_IS_HAPPY':
+    case 'SET_NEW_PLAYLIST':
       return {
         ...state,
-        is_happy: action.is_happy,
+        is_new_playlist: action.is_new_playlist,
       };
     default:
       return state;

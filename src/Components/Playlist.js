@@ -17,7 +17,7 @@ import { useStyles, cardStyle } from './Styles';
 
 
 function Playlist({ list }) {
-  const [{ user, playlists }, dispatch] = useStateValue();
+  const [{ user, playlists, is_new_playlist }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
@@ -70,6 +70,8 @@ function Playlist({ list }) {
         if (arrayOfSongs.length > 0) {
           postFillPlaylist(user, uris, playlistId)
         }
+
+        dispatch({ type: 'SET_NEW_PLAYLIST', is_new_playlist: true});
   }
 
   const saveAudioFeatures = async (top_tracks_list, mood) => {
