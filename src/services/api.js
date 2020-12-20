@@ -79,7 +79,6 @@ const postPlaylist = async (name, mood, userId) => {
     },
   });
   const playlistInfo = await emptyPlaylist.json();
-  console.log(playlistInfo);
   return playlistInfo;
   // .then((response) => response.json())
   // .then(async (response) => {
@@ -115,8 +114,14 @@ const renderNewPlaylist = async (playlistId) => {
   const songs = await getNewPlaylist.json();
   return songs;
 };
-// const renderNewPlaylist = async ()
 
 export {
-  getPlaylist, getUser, getSongs, getTopTracks, getAudioFeatures, postPlaylist, postFillPlaylist, renderNewPlaylist,
+  getPlaylist,
+  getUser,
+  getSongs,
+  getTopTracks,
+  getAudioFeatures,
+  postPlaylist,
+  postFillPlaylist,
+  renderNewPlaylist,
 };

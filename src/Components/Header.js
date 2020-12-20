@@ -1,4 +1,3 @@
-import { CardHeader } from '@material-ui/core';
 import React from 'react';
 import logo from '../images/app-logo.png';
 

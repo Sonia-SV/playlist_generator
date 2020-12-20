@@ -4,8 +4,6 @@ import PlaylistList from './PlaylistList';
 import GeneratedPlaylist from './GeneratedPlaylist';
 import { useStateValue } from '../Context/StateProvider';
 
-// is_new_
-
 function UserSpace() {
   const [{ is_mood }, dispatch] = useStateValue();
 

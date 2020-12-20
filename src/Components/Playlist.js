@@ -12,11 +12,10 @@ import {
 } from '../services/api';
 import { useStateValue } from '../Context/StateProvider';
 import { useStyles, cardStyle } from './Styles';
-// import MoodList from './MoodList';
 
 function Playlist({ list }) {
   const [{
-    user, playlists, is_mood, is_new_playlist,
+    user,
   }, dispatch] = useStateValue();
 
   const classes = useStyles();
