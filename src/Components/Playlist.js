@@ -14,16 +14,16 @@ import { useStateValue } from '../Context/StateProvider';
 import { useStyles, cardStyle } from './Styles';
 // import MoodList from './MoodList';
 
-
-
 function Playlist({ list }) {
-  const [{ user, playlists, is_mood, is_new_playlist }, dispatch] = useStateValue();
+  const [{
+    user, playlists, is_mood, is_new_playlist,
+  }, dispatch] = useStateValue();
 
   const classes = useStyles();
   const cover = list.images[0] !== undefined ? list.images[0].url : 'https://via.placeholder.com/640';
 
   const getTarget = async (ev) => {
-    dispatch({ type: 'SET_MOOD', is_mood: true});
+    dispatch({ type: 'SET_MOOD', is_mood: true });
     console.log('Mood set');
     const mood = getMood(ev);
     const playlistName = list.name;
@@ -54,7 +54,7 @@ function Playlist({ list }) {
 
   const saveTopTracks = async (songs) => {
     const topTracks = [];
-    for (let song of songs) {
+    for (const song of songs) {
       const tracks = await getTopTracks(song);
       topTracks.push(tracks);
     }
@@ -64,32 +64,29 @@ function Playlist({ list }) {
   const createPlaylist = async (mood, playlistName) => {
     const createList = await postPlaylist(playlistName, mood, user);
     return createList.id;
-
   };
 
   const addSongsPlaylist = async (arrayOfSongs, playlistId) => {
     const uris = arrayOfSongs.map((track) => `spotify:track:${track}`).join(',');
-        if (arrayOfSongs.length > 0) {
-          postFillPlaylist(user, uris, playlistId)
-        }
-        dispatch({ type: 'SET_NEW_PLAYLIST', is_new_playlist: true });
-        dispatch({ type: 'NEW_PLAYLIST_ID', new_playlist_id: playlistId })
-  }
+    if (arrayOfSongs.length > 0) {
+      postFillPlaylist(user, uris, playlistId);
+    }
+    dispatch({ type: 'SET_NEW_PLAYLIST', is_new_playlist: true });
+    dispatch({ type: 'NEW_PLAYLIST_ID', new_playlist_id: playlistId });
+  };
 
   const saveAudioFeatures = async (top_tracks_list, mood) => {
     const songsToPlaylist = [];
     for (const artist of top_tracks_list) {
       const artistInfo = {};
-      for (let song of artist) {
+      for (const song of artist) {
         const features = await getAudioFeatures(song);
         const moodSelector = mood ? features.danceability : features.valence;
-        artistInfo[features.id] = moodSelector ;
+        artistInfo[features.id] = moodSelector;
       }
 
       const keysSorted = Object.keys(artistInfo)
-        .sort (function (a, b) {
-          return artistInfo[mood ? b : a] - artistInfo[mood ? a : b];
-        });
+        .sort((a, b) => artistInfo[mood ? b : a] - artistInfo[mood ? a : b]);
       songsToPlaylist.push(keysSorted[0]);
     }
     return songsToPlaylist;
@@ -101,9 +98,13 @@ function Playlist({ list }) {
   };
 
   return (
-    <Grid item xs={6} sm={6} md={4}
-    align="center"
->
+    <Grid
+      item
+      xs={6}
+      sm={6}
+      md={4}
+      align="center"
+    >
 
       <Card style={cardStyle} className={classes.root}>
         <div className={classes.details}>

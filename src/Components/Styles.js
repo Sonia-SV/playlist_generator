@@ -1,6 +1,5 @@
 import { makeStyles } from '@material-ui/core/styles';
 
-
 const useStyles = makeStyles((theme) => ({
   root: {
     display: 'flex',
@@ -30,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-
 const cardStyle = {
   display: 'flex',
   flexDirection: 'column',
@@ -41,7 +39,6 @@ const cardStyle = {
   maxWidth: '350px',
   backgroundColor: '#fff6a4',
 
-
-}
+};
 
 export { useStyles, cardStyle };
