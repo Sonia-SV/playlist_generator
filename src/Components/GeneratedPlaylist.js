@@ -1,4 +1,5 @@
 import React from 'react';
+import Loader from './Loader';
 import { useStateValue } from '../Context/StateProvider';
 import { renderNewPlaylist } from '../services/api';
 
@@ -14,12 +15,12 @@ function GeneratedPlaylist() {
   // const prueba = await paintNewPlaylist();
   // console.log(prueba);
 
-  const widget = <iframe src={`https://open.spotify.com/embed/playlist/${new_playlist_id}`} width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>;
+  const widget = <iframe src={`https://open.spotify.com/embed/playlist/${new_playlist_id}` } title='New Playlist' width="300" height="380" frameBorder="0" allowtransparency="true" allow="encrypted-media"></iframe>;
  return (
   <>
   <main className="main">
-    {new_playlist_id.length > 0 ?
-     widget : ''
+    { is_new_playlist ?
+     widget : <Loader/>
     }
 
   </main>

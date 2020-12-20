@@ -9,12 +9,12 @@ import { useStateValue } from '../Context/StateProvider';
 
 function UserSpace() {
 
-  const [{ is_new_playlist }, dispatch] = useStateValue();
+  const [{ is_mood }, dispatch] = useStateValue();
 
  return (
   <>
   <Header />
-  {is_new_playlist ? <GeneratedPlaylist/> : <PlaylistList />}
+  {is_mood ? <GeneratedPlaylist/> : <PlaylistList />}
 </>
 );
 }

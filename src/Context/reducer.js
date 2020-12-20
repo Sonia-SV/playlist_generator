@@ -6,7 +6,7 @@ export const initialState = {
   current_playlist: null,
   songs: [],
   is_new_playlist: false,
-  is_mood: true,
+  is_mood: false,
   top_tracks_list: [],
   new_playlist_id: '',
 };

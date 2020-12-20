@@ -24,6 +24,7 @@ function Playlist({ list }) {
 
   const getTarget = async (ev) => {
     dispatch({ type: 'SET_MOOD', is_mood: true});
+    console.log('Mood set');
     const mood = getMood(ev);
     const playlistName = list.name;
     const artistFromPlaylist = await getSongsFromPlaylist();
